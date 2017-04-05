@@ -1,6 +1,8 @@
 var express = require('express'),
   router = express.Router(),
   Article = require('../models/article');
+  config = require('../.../config/config');
+  
 
 module.exports = function (app) {
   app.use('/', router);
