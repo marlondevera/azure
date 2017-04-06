@@ -1,7 +1,7 @@
 var express = require('express'),
   router = express.Router(),
   Article = require('../models/article');
-  config = require('../.../config/config');
+  config = require('../../config/config');
   
 
 module.exports = function (app) {
@@ -11,7 +11,7 @@ module.exports = function (app) {
 router.get('/', function (req, res, next) {
   var articles = [new Article(), new Article()];
     res.render('index', {
-      title: 'Generator-Express MVC Azure',
+      title: config.app.name,
       articles: articles
     });
 });

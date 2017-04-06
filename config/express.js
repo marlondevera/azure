@@ -7,11 +7,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
+var appInsights = require('applicationinsights');
+var instrumentationKey = 'b2188e05-3c97-4688-8d1d-b362d3e3ddcf'
 
 module.exports = function(app, config) {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
+
+  appInsights.setup(instrumentationKey).start();
+  var aiClient = appInsights.getClient(instrumentationKey);
   
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'jade');
@@ -50,6 +55,7 @@ module.exports = function(app, config) {
   }
 
   app.use(function (err, req, res, next) {
+    aiClient.trackException(err);
     res.status(err.status || 500);
       res.render('error', {
         message: err.message,
